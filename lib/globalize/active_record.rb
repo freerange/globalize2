@@ -49,10 +49,11 @@ module Globalize
         return if translates?
         options = attr_names.extract_options!
 
-        class_inheritable_accessor :translation_class, :translated_attribute_names
+        class_inheritable_accessor :translation_class, :translated_attribute_names, :translations_not_dependent
         class_inheritable_writer :required_attributes
         self.translation_class = ActiveRecord.build_translation_class(self, options, &block)
         self.translated_attribute_names = attr_names.map(&:to_sym)
+        self.translations_not_dependent = options[:not_dependent]
 
         include InstanceMethods
         extend  ClassMethods, Migration
@@ -65,7 +66,7 @@ module Globalize
           :dependent   => :delete_all,
           :extend      => HasManyExtensions
         }
-        has_many_options.delete(:dependent) if options[:not_dependent]
+        has_many_options.delete(:dependent) if translations_not_dependent
         has_many :translations, has_many_options
 
         named_scope :with_translations, lambda { |locale|

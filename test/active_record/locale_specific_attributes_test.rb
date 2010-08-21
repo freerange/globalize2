@@ -29,6 +29,42 @@ class LocaleSpecificAttributesTest < ActiveSupport::TestCase
     assert_nil post.subject
   end
 
+  test "blank translation deletion for new object" do
+    post = Post.create(:subject_en => "en subject", :content_en => "en content",
+                       :subject_de => "", :content_de => "")
+
+    assert_equal 1, post.translations(true).size
+    assert_nil post.translations.detect{ |t| t.locale == :'de' }
+  end
+
+  test "blank translation deletion for existing object" do
+    post = Post.create(:subject_en => "en subject", :content_en => "en content",
+                       :subject_de => "de subject", :content_de => "de content")
+
+    post.update_attributes(:subject_de => '', :content_de => '')
+
+    assert_equal 1, post.translations(true).size
+    assert_nil post.translations.detect{ |t| t.locale == :'de' }
+  end
+
+  test "blank non-dependent translation deletion for new object" do
+    post_revision = PostRevision.create(:subject_en => "en subject", :content_en => "en content",
+                                        :subject_de => "", :content_de => "")
+
+    assert_equal 1, PostRevision::Translation.count
+    assert_nil post_revision.translations.detect{ |t| t.locale == :'de' }
+  end
+
+  test "blank non-dependent translation deletion for existing object" do
+    post_revision = PostRevision.create(:subject_en => "en subject", :content_en => "en content",
+                                        :subject_de => "de subject", :content_de => "de content")
+
+    post_revision.update_attributes(:subject_de => '', :content_de => '')
+
+    assert_equal 1, PostRevision::Translation.count
+    assert_nil post_revision.translations.detect{ |t| t.locale == :'de' }
+  end
+
   test "locale specific readers" do
     post = Post.create(:subject_en => "en subject", :content_en => "en content",
                        :subject_en_us => "en-US subject", :content_en_us => "en-US content",
