@@ -10,13 +10,13 @@ end
 class Post < ActiveRecord::Base
   translates :subject, :content
   validates_presence_of :subject
-  named_scope :foobar, :conditions => { :title => "foobar" }
+  scope :foobar, :conditions => { :title => "foobar" }
 end
 
 class PostRevision < ActiveRecord::Base
   translates :subject, :content, :table_name => 'post_translations', :foreign_key => 'post_id', :not_dependent => true
   validates_presence_of :subject
-  named_scope :foobar, :conditions => { :title => "foobar" }
+  scope :foobar, :conditions => { :title => "foobar" }
 end
 
 class Blog < ActiveRecord::Base
