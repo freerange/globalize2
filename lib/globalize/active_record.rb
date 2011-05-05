@@ -203,7 +203,7 @@ module Globalize
       end
 
       def available_locales
-        translations.scoped(:select => 'DISTINCT locale').map(&:locale)
+        translations.all(:select => 'DISTINCT locale').map(&:locale)
       end
 
       def translated_locales
