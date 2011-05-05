@@ -62,7 +62,7 @@ module Globalize
 
         has_many_options = {
           :class_name  => translation_class.name,
-          :foreign_key => translation_class.foreign_key || class_name.foreign_key,
+          :foreign_key => translation_class.foreign_key || foreign_key,
           :dependent   => :delete_all,
           :extend      => HasManyExtensions
         }
