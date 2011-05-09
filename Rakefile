@@ -31,7 +31,10 @@ begin
     s.homepage = "http://github.com/joshmh/globalize2"
     # s.rubyforge_project = ''
     s.authors = ["Sven Fuchs, Joshua Harvey, Clemens Kofler, John-Paul Bader"]
-    # s.add_development_dependency ''
+    s.add_dependency 'activerecord', '~>3.0'
+    s.add_dependency 'activesupport', '~>3.0'
+    s.add_development_dependency 'sqlite3'
+    s.add_development_dependency 'mocha'
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

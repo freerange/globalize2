@@ -4,3 +4,4 @@ vendor
 NOTES
 .DS_Store
 pkg
+Gemfile.lock
